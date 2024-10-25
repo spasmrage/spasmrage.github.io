@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Goblin Guy Crisis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000, #111);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1, h2 {
+            background: linear-gradient(45deg, #ff0000, #660000);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 3rem;
+            text-transform: uppercase;
+            animation: fade-slide 3s infinite alternate;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            animation: flicker 3s infinite;
+        }
+
+        .reveal-btn {
+            background: #111;
+            color: #ff0000;
+            border: 3px solid #ff0000;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .reveal-btn:hover {
+            background: #222;
+            transform: scale(1.1);
+        }
+
+        .message {
+            opacity: 0;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, #ff0000, #660000);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-top: 50px;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 1s ease;
+            z-index: 2;
+        }
+
+        .jumpscare {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/goblin.png') center center no-repeat;
+            background-size: cover;
+            display: none;
+            z-index: 1000;
+            animation: flashing 0.03s infinite alternate, intense-shake 0.02s infinite, slight-tilt 0.4s infinite linear;
+        }
+
+        .hidden-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            opacity: 0;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .fullscreen-image {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/pulapenguin.png') center center no-repeat;
+            background-size: cover;
+            z-index: 2000;
+        }
+
+        .random-text {
+            position: absolute;
+            color: yellow;
+            font-size: 1.5rem;
+            pointer-events: none; /* Prevent interaction */
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        @keyframes intense-shake {
+            0% { transform: translate(0); }
+            25% { transform: translate(-20px, 20px); }
+            50% { transform: translate(20px, -20px); }
+            75% { transform: translate(-20px, -20px); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        @keyframes slight-tilt {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(7deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes flashing {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fade-slide {
+            0% {
+                transform: translateX(-30px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateX(30px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.1; }
+            100% { opacity: 1; }
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            width: 100%;
+            background: linear-gradient(to right, #000, #333);
+            padding: 10px;
+            color: #999;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+        
+        footer span {
+            color: #f00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Goblin Guy Crisis</h1>
+    <h2>Granny Guy Spasm Rage Too</h2>
+
+    <button class="reveal-btn" onclick="revealMessage()">I Have to Tell You Something Serious...</button>
+
+    <p class="message" id="message">The goblin guy has become infected with the granny guy spasm rage too.</p>
+
+    <button class="hidden-btn" onclick="showImageAndSound()"></button>
+
+    <div class="jumpscare" id="jumpscare"></div>
+    <div class="fullscreen-image" id="fullscreen-image"></div>
+
+    <footer>
+        © 2024 The Goblin Guy Council | All rights reserved | In partnership with <span>Dj Poggostick Inc.</span>
+    </footer>
+
+    <audio id="jumpscare-sound" src="/goblinfull.ogg"></audio>
+    <audio id="background-music" src="/spasm.ogg" autoplay loop></audio>
+    <audio id="ringtone-sound" src="/ringtone.ogg"></audio>
+
+    <script>
+        const phrases = [
+            "Fart",
+            "This is granny spasm rage guy secret language leaked",
+            "goblin guy",
+            "farting simulator",
+            "granny guy",
+            "The goblin guy has becomr infected with the granny guy spasm rage too..",
+            "spasm rage",
+            "goblin goblin",
+            "big peepee",
+            "I like turtles",
+            "big black oiled up men",
+            "skibidi toilet",
+            "HAWK TUAH"
+        ];
+
+        function revealMessage() {
+            const message = document.getElementById('message');
+            const jumpscare = document.getElementById('jumpscare');
+            const sound = document.getElementById('jumpscare-sound');
+            const backgroundMusic = document.getElementById('background-music');
+
+            backgroundMusic.remove();
+
+            document.body.style.visibility = 'hidden';
+
+            setTimeout(() => {
+                document.body.style.visibility = 'visible';
+                jumpscare.style.display = 'block';
+                sound.play();
+                jumpscare.style.animation = 'infinite alternate, intense-shake 0.3s infinite, slight-tilt 0.08s infinite linear';
+            }, 2000);
+        }
+
+        function showImageAndSound() {
+            const fullscreenImage = document.getElementById('fullscreen-image');
+            const ringtoneSound = document.getElementById('ringtone-sound');
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.remove();
+            fullscreenImage.style.display = 'block';
+            ringtoneSound.play();
+        }
+
+        function showRandomText() {
+            const textElement = document.createElement('div');
+            textElement.className = 'random-text';
+            textElement.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+
+            // Set random position
+            textElement.style.left = Math.random() * 100 + 'vw';
+            textElement.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(textElement);
+
+            // Show the text
+            textElement.style.opacity = 1;
+
+            // Remove the text after 2 milliseconds
+            setTimeout(() => {
+                textElement.style.opacity = 0;
+                setTimeout(() => {
+                    document.body.removeChild(textElement);
+                }, 200); // Allow fade-out effect
+            }, 2);
+        }
+
+        // Show random text every 1 second
+        setInterval(showRandomText, 10000);
+
+        window.addEventListener('click', function() {
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.play().catch(() => {
+                console.log('Autoplay blocked.');
+            });
+        });
+
+        window.onload = function() {
+            const backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.play().catch(() => {
+                console.log('Autoplay blocked.');
+            });
+
+            setTimeout(() => {
+                const videoContainer = document.getElementById('video-container');
+                const video = document.getElementById('grannyguy-video');
+                
+                videoContainer.style.display = 'block';
+                video.play();
+            }, 30000);
+        };
+    </script>
+</body>
+</html>
